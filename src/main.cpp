@@ -12,48 +12,48 @@
 #define SSID "Spider"
 #define SSID_PASSWORD "*******"
 
-// #define DHTPIN D7
-// #define DHTTYPE DHT11
-// DHT dht(DHTPIN, DHTTYPE);
+#define DHTPIN D7
+#define DHTTYPE DHT11
+DHT dht(DHTPIN, DHTTYPE);
 
-// Adafruit_BMP280 bmp;
-// float bmptemp = 0.0;
-// float pressure = 0.0;
+Adafruit_BMP280 bmp;
+float bmptemp = 0.0;
+float pressure = 0.0;
 
-// ThingerESP8266 thing(USERNAME, DEVICE_ID, DEVICE_CREDENTIAL);
+ThingerESP8266 thing(USERNAME, DEVICE_ID, DEVICE_CREDENTIAL);
 
-// void setup() {
-//   Serial.begin(115200);
-//   dht.begin();
-//   Wire.begin(D2, D3); // Initialize I2C pins for BMP280
-//   bmp.begin(0x76); // I2C address 0x76 for BMP280
-//   thing.add_wifi(SSID, SSID_PASSWORD);
-// }
+void setup() {
+  Serial.begin(115200);
+  dht.begin();
+  Wire.begin(D2, D3); // Initialize I2C pins for BMP280
+  bmp.begin(0x76); // I2C address 0x76 for BMP280
+  thing.add_wifi(SSID, SSID_PASSWORD);
+}
 
-// void loop() {
-//   thing.handle();
+void loop() {
+  thing.handle();
 
-//   float humidity = dht.readHumidity();
-//   float temperature = dht.readTemperature();
+  float humidity = dht.readHumidity();
+  float temperature = dht.readTemperature();
 
-//   if (isnan(humidity) || isnan(temperature)) {
-//     Serial.println("Failed to read from DHT sensor!");
-//     return;
-//   }
+  if (isnan(humidity) || isnan(temperature)) {
+    Serial.println("Failed to read from DHT sensor!");
+    return;
+  }
 
-//   float pressure = bmp.readPressure() / 100.0;
+  float pressure = bmp.readPressure() / 100.0;
 
-//   thing["DHT11"] >> [temperature, humidity](pson& out) {
-//     out["temperature"] = temperature;
-//     out["humidity"] = humidity;
-//   };
+  thing["DHT11"] >> [temperature, humidity](pson& out) {
+    out["temperature"] = temperature;
+    out["humidity"] = humidity;
+  };
 
-//   thing["BMP280"] >> [bmptemp, pressure](pson& out) {
-//     out["bmp_280_Temperature"] = bmp.readTemperature();
-//     out["bmp_280_Pressure"] = bmp.readPressure();
-//     out["bmp_280_altitude"] = bmp.readAltitude();
-//   };
-// }
+  thing["BMP280"] >> [bmptemp, pressure](pson& out) {
+    out["bmp_280_Temperature"] = bmp.readTemperature();
+    out["bmp_280_Pressure"] = bmp.readPressure();
+    out["bmp_280_altitude"] = bmp.readAltitude();
+  };
+}
 
 
 #define DHT_PIN D7
